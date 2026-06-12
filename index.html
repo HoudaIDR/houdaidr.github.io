@@ -1065,7 +1065,7 @@
     }
   }
 
-  window.addEventListener('load', function() { setTimeout(typeLoop, 1800); });
+  document.addEventListener('DOMContentLoaded', function() { setTimeout(typeLoop, 2000); });
 
   // ═══ REVEAL + BARRES + COMPTEURS ═══
   var revealObs = new IntersectionObserver(function(entries) {
