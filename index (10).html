@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Houda Sophia Idrissi — Cybersécurité, Réseaux & Développement</title>
+  <meta name="description" content="CV interactif de Houda Sophia Idrissi, étudiante en BTS CIEL (Cybersécurité, Informatique et Réseaux). Projets C#, audit de sécurité, infrastructure." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0C100D;
+      --bg2:       #121812;
+      --bg3:       #182019;
+      --sage:      #9CAF88;
+      --sage-l:    #C3D4B8;
+      --gold:      #C9A878;
+      --text:      #EEF2EA;
+      --muted:     #8FA28F;
+      --border:    rgba(156,175,136,0.14);
+      --shadow:    rgba(0,0,0,0.4);
+      --radius:    14px;
+    }
+    html.light {
+      --bg:        #F2EFE6;
+      --bg2:       #FAF8F1;
+      --bg3:       #EDEADF;
+      --sage:      #5F7A5E;
+      --sage-l:    #46603F;
+      --gold:      #A8854F;
+      --text:      #1C241E;
+      --muted:     #6B7A6B;
+      --border:    rgba(95,122,94,0.18);
+      --shadow:    rgba(60,70,60,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Outfit', sans-serif; font-size: 15.5px; line-height: 1.65;
+      transition: background .4s ease, color .4s ease;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--sage); color: var(--bg); }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 99px; border: 2px solid var(--bg); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--sage); }
+
+    /* ═══ BARRE DE PROGRESSION ═══ */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 2.5px; width: 0%;
+      background: linear-gradient(90deg, var(--sage), var(--gold));
+      z-index: 200; transition: width .1s linear;
+    }
+
+    /* ═══ NAVIGATION ═══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 2.2rem;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background .4s ease;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; }
+    .nav-monogram {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid var(--sage);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1rem;
+      color: var(--sage); letter-spacing: 0.02em;
+    }
+    .nav-id { display: flex; flex-direction: column; line-height: 1.25; }
+    .nav-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .nav-role { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 1.6rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.02em; transition: color .2s; position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; bottom: -2px; height: 1.5px; width: 0;
+      background: var(--sage); transition: width .25s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-links a.active::after, .nav-links a:hover::after { width: 100%; }
+    #theme-toggle {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--bg2);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: color .2s, border-color .2s, transform .3s;
+    }
+    #theme-toggle:hover { color: var(--sage); border-color: var(--sage); transform: rotate(20deg); }
+    #theme-toggle svg { width: 16px; height: 16px; }
+
+    /* ═══ HERO ═══ */
+    #hero {
+      min-height: 92vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 7.5rem 3rem 3.5rem;
+      max-width: 1060px; margin: 0 auto;
+      position: relative;
+    }
+    .hero-line {
+      width: 0; height: 1px; background: linear-gradient(90deg, var(--sage), var(--gold), transparent);
+      margin-bottom: 2.2rem;
+      animation: drawline 1.1s cubic-bezier(.7,0,.2,1) .15s forwards;
+    }
+    @keyframes drawline { to { width: 110px; } }
+    .hero-top { display: flex; align-items: center; gap: 2.6rem; }
+    .hero-photo {
+      width: 138px; height: 138px; border-radius: 50%; flex-shrink: 0;
+      background: var(--bg3);
+      border: 2px solid var(--sage);
+      outline: 6px solid color-mix(in srgb, var(--sage) 12%, transparent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.2rem; overflow: hidden;
+      opacity: 0; animation: fadeup .8s ease .35s forwards;
+    }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      letter-spacing: 0.28em; text-transform: uppercase; color: var(--sage);
+      margin-bottom: 0.7rem;
+      opacity: 0; animation: fadeup .7s ease .45s forwards;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6.5vw, 4.6rem);
+      font-weight: 600; line-height: 1.02; color: var(--text);
+      letter-spacing: 0.01em;
+      opacity: 0; animation: fadeup .9s cubic-bezier(.2,.7,.3,1) .55s forwards;
+    }
+    .hero-sub {
+      margin-top: 0.9rem; font-size: 1.05rem; color: var(--muted); font-weight: 400;
+      min-height: 1.7em;
+      opacity: 0; animation: fadeup .8s ease .8s forwards;
+    }
+    .hero-sub .typed { color: var(--sage); font-weight: 600; }
+    .hero-sub .cursor { display: inline-block; width: 1.5px; height: 1em; background: var(--sage); margin-left: 2px; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-quote {
+      margin-top: 1.1rem;
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 1.05rem; color: var(--muted);
+      opacity: 0; animation: fadeup .8s ease .95s forwards;
+    }
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; font-weight: 500;
+      letter-spacing: 0.05em; padding: 0.36rem 0.85rem; border-radius: 99px;
+      border: 1px solid var(--border); color: var(--sage);
+      background: color-mix(in srgb, var(--sage) 6%, transparent);
+      opacity: 0; animation: fadeup .6s ease forwards;
+    }
+    .badge:nth-child(1){animation-delay:1.05s} .badge:nth-child(2){animation-delay:1.13s}
+    .badge:nth-child(3){animation-delay:1.21s} .badge:nth-child(4){animation-delay:1.29s}
+    .badge:nth-child(5){animation-delay:1.37s}
+    .hero-contacts {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 280px)); gap: 0.55rem 2.5rem;
+      margin-top: 1.7rem;
+      opacity: 0; animation: fadeup .8s ease 1.5s forwards;
+    }
+    .hc {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.85rem; color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .hc:hover { color: var(--sage); }
+    .hc svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 2.6rem; flex-wrap: wrap;
+      padding-top: 1.8rem; border-top: 1px solid var(--border);
+      opacity: 0; animation: fadeup .8s ease 1.7s forwards;
+    }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; font-weight: 700;
+      color: var(--text); line-height: 1;
+    }
+    .stat-num .gold { color: var(--gold); }
+    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 0.45rem; }
+    @keyframes fadeup { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+    /* ═══ SECTIONS ═══ */
+    section { padding: 4.5rem 3rem; max-width: 1060px; margin: 0 auto; scroll-margin-top: 85px; }
+    .sec-head { margin-bottom: 2.8rem; }
+    .sec-eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.26em; text-transform: uppercase; color: var(--sage);
+      margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem;
+    }
+    .sec-eyebrow::after { content: ''; height: 1px; width: 48px; background: var(--border); }
+    .sec-title {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(1.9rem, 4vw, 2.7rem);
+      font-weight: 600; color: var(--text); line-height: 1.1;
+    }
+    .sec-sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; }
+    .divider { height: 1px; max-width: 1060px; margin: 0 auto; background: var(--border); }
+
+    /* ═══ ACCORDÉONS (expériences + projets) ═══ */
+    .timeline { position: relative; padding-left: 3rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 1.05rem; top: 8px; bottom: 8px;
+      width: 1px; background: linear-gradient(180deg, var(--sage), var(--border));
+      opacity: 0.5;
+    }
+    .titem { position: relative; margin-bottom: 1.1rem; }
+    .tdot {
+      position: absolute; left: -2.45rem; top: 1.15rem;
+      width: 34px; height: 34px; border-radius: 10px;
+      background: var(--bg2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+      transition: border-color .25s;
+    }
+    .titem:hover .tdot { border-color: var(--sage); }
+    .tnum {
+      position: absolute; left: -2.05rem; top: 3.6rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--muted);
+      writing-mode: vertical-rl; letter-spacing: 0.15em;
+    }
+    .tcard {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+    }
+    .tcard:hover { border-color: color-mix(in srgb, var(--sage) 45%, transparent); box-shadow: 0 8px 28px var(--shadow); }
+    .thead {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 1.25rem 1.5rem; cursor: pointer; user-select: none;
+    }
+    .thead-left { flex: 1; }
+    .trow1 { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.2rem; }
+    .tname { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .tdate {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; color: var(--muted);
+      background: color-mix(in srgb, var(--text) 4%, transparent);
+      border: 1px solid var(--border);
+      padding: 0.18rem 0.6rem; border-radius: 5px; letter-spacing: 0.05em;
+    }
+    .trole { font-size: 0.92rem; color: var(--sage); font-weight: 600; margin-bottom: 0.35rem; }
+    .tsummary { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+    .tchevron {
+      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      background: color-mix(in srgb, var(--text) 4%, transparent);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); margin-left: 1rem; margin-top: 0.15rem;
+      transition: transform .3s cubic-bezier(.4,0,.2,1), color .2s, border-color .2s;
+    }
+    .tchevron svg { width: 14px; height: 14px; }
+    .titem.open .tchevron { transform: rotate(180deg); color: var(--sage); border-color: var(--sage); }
+    .tbody {
+      max-height: 0; overflow: hidden;
+      transition: max-height .45s cubic-bezier(.4,0,.2,1);
+    }
+    .tbody-inner { padding: 0.2rem 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+    .tsec {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--sage);
+      margin: 1.1rem 0 0.55rem;
+    }
+    .tbody ul { padding-left: 1.15rem; }
+    .tbody ul li { font-size: 0.84rem; color: var(--muted); margin-bottom: 0.32rem; line-height: 1.55; }
+    .tbody ul li::marker { color: var(--sage); }
+    .ttags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.85rem; }
+    .ttag {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 500;
+      padding: 0.22rem 0.6rem; border-radius: 5px;
+      background: color-mix(in srgb, var(--sage) 8%, transparent);
+      border: 1px solid var(--border); color: var(--sage);
+    }
+
+    /* ═══ COMPÉTENCES ═══ */
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .skill-block {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .skill-block:hover { border-color: color-mix(in srgb, var(--sage) 35%, transparent); box-shadow: 0 8px 24px var(--shadow); }
+    .sb-head { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.4rem; }
+    .sb-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: color-mix(in srgb, var(--sage) 9%, transparent);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .sb-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 700; color: var(--text); }
+    .srow { margin-bottom: 0.95rem; }
+    .srow:last-child { margin-bottom: 0; }
+    .srow-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.32rem; }
+    .srow-label { font-size: 0.83rem; color: var(--text); font-weight: 500; }
+    .srow-pct { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+    .sbar { height: 4px; background: color-mix(in srgb, var(--text) 7%, transparent); border-radius: 99px; overflow: hidden; }
+    .sbar-fill {
+      height: 100%; width: 0; border-radius: 99px;
+      background: linear-gradient(90deg, var(--sage), var(--gold));
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ═══ FORMATIONS ═══ */
+    .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+    .form-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem;
+      display: flex; gap: 0.9rem; align-items: flex-start;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .form-card:hover { border-color: color-mix(in srgb, var(--sage) 40%, transparent); transform: translateY(-3px); box-shadow: 0 10px 26px var(--shadow); }
+    .form-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      background: color-mix(in srgb, var(--sage) 9%, transparent);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+    }
+    .form-title { font-size: 0.88rem; font-weight: 600; color: var(--text); line-height: 1.35; margin-bottom: 0.45rem; }
+    .form-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .form-year { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--muted); }
+    .form-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; font-weight: 600;
+      padding: 0.16rem 0.55rem; border-radius: 4px; letter-spacing: 0.06em;
+    }
+    .fb-cur { background: color-mix(in srgb, var(--gold) 14%, transparent); color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); }
+    .fb-ok  { background: color-mix(in srgb, var(--sage) 10%, transparent); color: var(--sage); border: 1px solid var(--border); }
+    .form-place { font-size: 0.74rem; color: var(--muted); margin-top: 0.3rem; }
+    .langs {
+      margin-top: 1.1rem; display: flex; gap: 0.6rem; flex-wrap: wrap;
+      align-items: center;
+    }
+    .langs-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+      margin-right: 0.4rem;
+    }
+    .lang-pill {
+      font-size: 0.78rem; font-weight: 500; padding: 0.35rem 0.95rem;
+      border-radius: 99px; border: 1px solid var(--border);
+      background: var(--bg2); color: var(--text);
+    }
+    .lang-pill span { color: var(--sage); font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; margin-left: 0.35rem; }
+
+    /* ═══ CENTRES D'INTÉRÊT ═══ */
+    .int-row { display: flex; justify-content: center; gap: 1.1rem; flex-wrap: wrap; }
+    .int-row + .int-row { margin-top: 1.1rem; }
+    .int-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.7rem 1rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+      width: calc(33.33% - 0.74rem); min-width: 170px;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .int-card:hover { border-color: color-mix(in srgb, var(--sage) 40%, transparent); transform: translateY(-4px); box-shadow: 0 10px 26px var(--shadow); }
+    .int-icon {
+      width: 54px; height: 54px; border-radius: 50%;
+      background: color-mix(in srgb, var(--sage) 8%, transparent);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .int-label { font-size: 0.85rem; font-weight: 600; color: var(--text); text-align: center; }
+
+    /* ═══ PARTAGE / QR ═══ */
+    #partage { text-align: center; }
+    #partage .sec-head { display: flex; flex-direction: column; align-items: center; }
+    #partage .sec-eyebrow::after { display: none; }
+    .qr-card {
+      display: inline-block; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.6rem; margin-top: 0.5rem;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .qr-card:hover { border-color: color-mix(in srgb, var(--sage) 40%, transparent); box-shadow: 0 12px 32px var(--shadow); }
+    .qr-white { background: #fff; border-radius: 10px; padding: 0.9rem; display: inline-block; line-height: 0; }
+    .qr-url { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-top: 0.9rem; }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      border-top: 1px solid var(--border); background: var(--bg2);
+      text-align: center; padding: 2.8rem 2rem 2.2rem; margin-top: 2rem;
+      transition: background .4s ease;
+    }
+    .foot-name { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--text); margin-bottom: 1.1rem; }
+    .foot-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .foot-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.82rem;
+      display: flex; align-items: center; gap: 0.45rem; transition: color .2s;
+    }
+    .foot-links a:hover { color: var(--sage); }
+    .foot-links svg { width: 14px; height: 14px; }
+    .foot-credit { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; }
+    .foot-credit span { color: var(--sage); }
+
+    /* ═══ BACK TO TOP ═══ */
+    #top-btn {
+      position: fixed; bottom: 1.6rem; right: 1.6rem; z-index: 90;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transform: translateY(10px);
+      transition: opacity .3s, transform .3s, color .2s, border-color .2s;
+    }
+    #top-btn.show { opacity: 1; pointer-events: auto; transform: none; }
+    #top-btn:hover { color: var(--sage); border-color: var(--sage); }
+    #top-btn svg { width: 16px; height: 16px; }
+
+    /* ═══ REVEAL ═══ */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.3,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      #hero { padding: 6.5rem 1.4rem 3rem; min-height: auto; }
+      .hero-top { flex-direction: column; align-items: flex-start; gap: 1.6rem; }
+      .hero-contacts { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.8rem; }
+      section { padding: 3.2rem 1.4rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .int-card { width: calc(50% - 0.55rem); }
+      .timeline { padding-left: 2.6rem; }
+      .tdot { left: -2.2rem; width: 30px; height: 30px; font-size: 0.85rem; }
+      .tnum { display: none; }
+    }
+
+    /* ═══ REDUCED MOTION ═══ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+      .hero-line { width: 110px; }
+      .hero-photo, .hero-eyebrow, .hero-name, .hero-sub, .hero-quote,
+      .badge, .hero-contacts, .hero-stats { opacity: 1; transform: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ═══ PRINT ═══ */
+    @media print {
+      nav, #progress, #theme-toggle, #top-btn, #partage { display: none !important; }
+      body { background: #fff; color: #111; }
+      .tbody { max-height: none !important; }
+      .tcard, .skill-block, .form-card, .int-card { break-inside: avoid; border-color: #ccc; }
+      #hero { min-height: auto; padding-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav>
+  <a href="#hero" class="nav-brand">
+    <span class="nav-monogram">HI</span>
+    <span class="nav-id">
+      <span class="nav-name">Houda Sophia Idrissi</span>
+      <span class="nav-role">BTS CIEL · Cybersécurité</span>
+    </span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#experience" data-sec="experience">Expérience</a></li>
+    <li><a href="#projets" data-sec="projets">Projets</a></li>
+    <li><a href="#competences" data-sec="competences">Compétences</a></li>
+    <li><a href="#formation" data-sec="formation">Formation</a></li>
+    <li><a href="#interets" data-sec="interets">Intérêts</a></li>
+    <li><a href="#partage" data-sec="partage">Partager</a></li>
+  </ul>
+  <button id="theme-toggle" aria-label="Changer de thème">
+    <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+  </button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<header id="hero">
+  <div class="hero-line"></div>
+  <div class="hero-top">
+    <div class="hero-photo"><img src="data:image/jpeg;base64,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" alt="Houda Sophia Idrissi" /></div>
+    <div>
+      <div class="hero-eyebrow">Portfolio · 2026</div>
+      <h1 class="hero-name">Houda Sophia Idrissi</h1>
+      <div class="hero-sub">Étudiante BTS CIEL — <span class="typed" id="typed"></span><span class="cursor"></span></div>
+      <div class="hero-quote">« J'apprends en construisant — chaque projet est une opportunité de progresser. »</div>
+    </div>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">BTS CIEL 1ère → 2ème année</span>
+    <span class="badge">Cybersécurité</span>
+    <span class="badge">Développement C# / .NET</span>
+    <span class="badge">Réseaux & Infrastructure</span>
+    <span class="badge">Annecy & Mulhouse</span>
+  </div>
+  <div class="hero-contacts">
+    <a class="hc" href="mailto:houda.sophia.idrissi@gmail.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      houda.sophia.idrissi@gmail.com
+    </a>
+    <a class="hc" href="tel:+33662851780">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+      06 62 85 17 80
+    </a>
+    <a class="hc" href="https://www.linkedin.com/in/houda-idrissi-b57300279/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+      Profil LinkedIn
+    </a>
+    <a class="hc" href="https://github.com/HoudaIDR" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      github.com/HoudaIDR
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num"><span class="count" data-target="10">0</span></span><span class="stat-label">Projets réalisés</span></div>
+    <div class="stat"><span class="stat-num"><span class="count" data-target="15">0</span><span class="gold">+</span></span><span class="stat-label">Technologies</span></div>
+    <div class="stat"><span class="stat-num"><span class="count" data-target="2">0</span></span><span class="stat-label">Expériences pro</span></div>
+    <div class="stat"><span class="stat-num"><span class="count" data-target="3">0</span></span><span class="stat-label">Langues</span></div>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<!-- ═══ EXPÉRIENCE ═══ -->
+<section id="experience">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">01 — Parcours</div>
+    <h2 class="sec-title">Expérience Professionnelle</h2>
+    <p class="sec-sub">Stages et missions menés en autonomie</p>
+  </div>
+  <div class="timeline">
+
+    <div class="titem reveal">
+      <div class="tdot">💼</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1">
+              <span class="tname">Easy Cash</span>
+              <span class="tdate">2026 · Stage BTS CIEL</span>
+            </div>
+            <div class="trole">Technicienne Informatique & Développeuse</div>
+            <div class="tsummary">Stage en totale autonomie — aucune mission définie en amont, j'ai identifié et conduit l'ensemble des axes de travail techniques.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Responsabilités principales</div>
+          <ul>
+            <li>Audit complet du système d'information du point de vente</li>
+            <li>Identification des vulnérabilités : sessions sans mot de passe, identifiants stockés dans les navigateurs, ports USB non contrôlés, armoire réseau non sécurisée</li>
+            <li>Inventaire du parc informatique via GLPI (XAMPP + MariaDB)</li>
+            <li>Obtention de l'autorisation formelle du prestataire IT pour les déploiements</li>
+          </ul>
+          <div class="tsec">Réalisations</div>
+          <ul>
+            <li>Déploiement Vaultwarden (Docker) + KeePass — DAT, cahier de tests, synthèse comparative</li>
+            <li>Développement EasyCashManager : client WPF, API ASP.NET Core + SQLite, app Android .NET MAUI, intégration SerpApi & GPT-4o</li>
+            <li>Scripts PowerShell testés sous VMware : verrouillage de session planifié, contrôle d'accès temporel</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags">
+            <span class="ttag">C# WPF</span><span class="ttag">ASP.NET Core</span><span class="ttag">.NET MAUI</span><span class="ttag">SQLite</span><span class="ttag">Docker</span><span class="ttag">Vaultwarden</span><span class="ttag">KeePass</span><span class="ttag">PowerShell</span><span class="ttag">VMware</span><span class="ttag">GLPI</span><span class="ttag">SerpApi</span><span class="ttag">GPT-4o</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🏪</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1">
+              <span class="tname">Easy Cash</span>
+              <span class="tdate">Novembre 2020 · Stage</span>
+            </div>
+            <div class="trole">Employée Polyvalente</div>
+            <div class="tsummary">Découverte du fonctionnement d'un magasin de seconde main et du service client.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Missions</div>
+          <ul>
+            <li>Accueil et conseil clientèle</li>
+            <li>Participation à la manutention des produits</li>
+            <li>Organisation générale du magasin</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PROJETS ═══ -->
+<section id="projets">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">02 — Réalisations</div>
+    <h2 class="sec-title">Projets Réalisés</h2>
+    <p class="sec-sub">Progression chronologique — de la découverte du C# aux projets de stage</p>
+  </div>
+  <div class="timeline">
+
+    <div class="titem reveal">
+      <div class="tdot">🧮</div><div class="tnum">N°01</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Calculatrice</span><span class="tdate">2025 · Scolaire</span></div>
+            <div class="trole">Découverte du C# — premier projet WPF</div>
+            <div class="tsummary">Première application C# WPF pour appréhender les bases du langage et de l'interface graphique.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Notions abordées</div>
+          <ul>
+            <li>Découverte de C# et de l'environnement Visual Studio</li>
+            <li>Premiers éléments XAML : boutons, grilles, événements</li>
+            <li>Logique de calcul et gestion des entrées utilisateur</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C#</span><span class="ttag">WPF</span><span class="ttag">XAML</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🪢</div><div class="tnum">N°02</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Jeu du Pendu</span><span class="tdate">2025 · Scolaire</span></div>
+            <div class="trole">Jeu C# WPF — logique et interface</div>
+            <div class="tsummary">Mise en pratique des structures conditionnelles et de la gestion d'état de jeu.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Notions abordées</div>
+          <ul>
+            <li>Gestion d'état (vies, lettres trouvées, mot caché)</li>
+            <li>Manipulation de chaînes de caractères et tableaux</li>
+            <li>Interface XAML interactive avec retour visuel</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C#</span><span class="ttag">WPF</span><span class="ttag">XAML</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🎄</div><div class="tnum">N°03</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Carte de Noël</span><span class="tdate">2025 · Scolaire · Binôme</span></div>
+            <div class="trole">Projet binôme C# WPF — animations et design</div>
+            <div class="tsummary">Carte de vœux interactive développée en binôme, axée sur les animations et le travail collaboratif.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Notions abordées</div>
+          <ul>
+            <li>Animations XAML et effets visuels</li>
+            <li>Travail collaboratif en binôme avec Git</li>
+            <li>Mise en page créative et interactions utilisateur</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C#</span><span class="ttag">WPF</span><span class="ttag">XAML</span><span class="ttag">Git</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🌤️</div><div class="tnum">N°04</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">API Météo</span><span class="tdate">2026 · Scolaire</span></div>
+            <div class="trole">Application météo C# — consommation d'API REST + JSON</div>
+            <div class="tsummary">Application WPF qui consomme une API météo externe et affiche les données parsées depuis JSON.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Notions abordées</div>
+          <ul>
+            <li>Requêtes HTTP et consommation d'une API REST</li>
+            <li>Désérialisation JSON avec classes modèles</li>
+            <li>Affichage dynamique des données météo en temps réel</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C#</span><span class="ttag">WPF</span><span class="ttag">API REST</span><span class="ttag">JSON</span><span class="ttag">HttpClient</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🍽️</div><div class="tnum">N°05</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">YUMAPI</span><span class="tdate">2026 · Scolaire · Binôme</span></div>
+            <div class="trole">Application de recettes multilingue — C# WPF MVC</div>
+            <div class="tsummary">Application connectée à TheMealDB avec chat IA, reconnaissance vocale et thème dynamique.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Fonctionnalités</div>
+          <ul>
+            <li>Authentification locale via JSON avec profil utilisateur (favoris, thème, dernière recette)</li>
+            <li>Recherche de recettes via TheMealDB API avec autocomplétion</li>
+            <li>Chat IA style WhatsApp (GPT-4o-mini) — multilingue 🇫🇷🇪🇸🇺🇸</li>
+            <li>Reconnaissance vocale (System.Speech)</li>
+            <li>Mode guidé étape par étape, ajustement des portions, calcul calories IA</li>
+            <li>Thème dynamique en 6 couleurs, favoris avec cœurs</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C# WPF</span><span class="ttag">MVC</span><span class="ttag">TheMealDB API</span><span class="ttag">GPT-4o-mini</span><span class="ttag">Reconnaissance vocale</span><span class="ttag">JSON</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🐺</div><div class="tnum">N°06</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Loup des Couleurs</span><span class="tdate">2026 · Scolaire · Binôme</span></div>
+            <div class="trole">Jeu éducatif RFID — C# WPF MVC</div>
+            <div class="tsummary">Jeu d'apprentissage des couleurs par lecture de cartes RFID, avec rapport et présentation BTS.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Fonctionnalités</div>
+          <ul>
+            <li>Lecture de cartes RFID via DLL externe (MasterRD)</li>
+            <li>Communication MQTT entre composants</li>
+            <li>Niveaux de difficulté, effets audio, écran GameOver avec notation par étoiles</li>
+            <li>Architecture MVC complète, rapport de projet et présentation orale BTS</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C# WPF</span><span class="ttag">MVC</span><span class="ttag">RFID</span><span class="ttag">MQTT</span><span class="ttag">Audio</span><span class="ttag">Git</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🍓</div><div class="tnum">N°07</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Serveur Raspberry Pi 5</span><span class="tdate">2026 · CCF pratique</span></div>
+            <div class="trole">Serveur multi-services IoT</div>
+            <div class="tsummary">Configuration d'un serveur complet : services web, base de données, MQTT et domotique.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Réalisations</div>
+          <ul>
+            <li>Installation et configuration Apache, MariaDB, MQTT Mosquitto</li>
+            <li>Intégration Home Assistant OS avec configuration GPIO</li>
+            <li>Capteur de température DS18B20 — lecture et affichage des données</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">Raspberry Pi 5</span><span class="ttag">Apache</span><span class="ttag">MariaDB</span><span class="ttag">MQTT</span><span class="ttag">Home Assistant</span><span class="ttag">GPIO</span><span class="ttag">Linux</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">💼</div><div class="tnum">N°08</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">EasyCashManager</span><span class="tdate">2026 · Stage BTS</span></div>
+            <div class="trole">Application de gestion interne — C# WPF + ASP.NET Core + Android</div>
+            <div class="tsummary">Application complète pour un magasin de seconde main : bureau, API REST, mobile et intégration IA.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Fonctionnalités</div>
+          <ul>
+            <li>Interface WPF avec navigation par UserControls injectés dans MainWindow (architecture MVC)</li>
+            <li>API REST ASP.NET Core + base de données SQLite</li>
+            <li>Application Android .NET MAUI — APK déployé sur Samsung A16</li>
+            <li>Intégration SerpApi pour recherche automatique des prix de revente</li>
+            <li>Intégration GPT-4o (GitHub Models) pour assistance IA</li>
+            <li>Module certification produit avec checklist dynamique (produit ouvert / scellé)</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">C# WPF</span><span class="ttag">ASP.NET Core</span><span class="ttag">.NET MAUI</span><span class="ttag">SQLite</span><span class="ttag">SerpApi</span><span class="ttag">GPT-4o</span><span class="ttag">Android</span><span class="ttag">MVC</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">🔑</div><div class="tnum">N°09</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Vaultwarden + KeePass</span><span class="tdate">2026 · Stage BTS</span></div>
+            <div class="trole">Gestionnaire de mots de passe auto-hébergé</div>
+            <div class="tsummary">Solution dual de gestion des mots de passe, déployée après autorisation formelle du prestataire IT.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Réalisations</div>
+          <ul>
+            <li>Déploiement Vaultwarden via Docker (auto-hébergé)</li>
+            <li>Configuration KeePass en solution complémentaire</li>
+            <li>Rédaction du DAT (Dossier d'Architecture Technique)</li>
+            <li>Cahier de tests et synthèse comparative des deux solutions</li>
+            <li>Obtention de l'autorisation formelle du prestataire IT Aquila</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">Docker</span><span class="ttag">Vaultwarden</span><span class="ttag">KeePass</span><span class="ttag">DAT</span><span class="ttag">Documentation technique</span></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="titem reveal">
+      <div class="tdot">⚙️</div><div class="tnum">N°10</div>
+      <div class="tcard">
+        <div class="thead" onclick="toggleAcc(this)">
+          <div class="thead-left">
+            <div class="trow1"><span class="tname">Scripts PowerShell & Automatisation</span><span class="tdate">2026 · Stage BTS</span></div>
+            <div class="trole">Automatisation Windows — tests sous VMware</div>
+            <div class="tsummary">Scripts de contrôle d'accès testés en environnement virtuel avant déploiement en production.</div>
+          </div>
+          <div class="tchevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        </div>
+        <div class="tbody"><div class="tbody-inner">
+          <div class="tsec">Réalisations</div>
+          <ul>
+            <li>Script de verrouillage de session Windows par horaires planifiés</li>
+            <li>Déclenchement audio automatique via tâches planifiées</li>
+            <li>Contrôle d'accès temporel — tests complets sous VMware avant prod</li>
+            <li>Documentation utilisateur remise au responsable du magasin</li>
+          </ul>
+          <div class="tsec">Technologies</div>
+          <div class="ttags"><span class="ttag">PowerShell</span><span class="ttag">VMware</span><span class="ttag">Tâches planifiées Windows</span><span class="ttag">Documentation</span></div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ COMPÉTENCES ═══ -->
+<section id="competences">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">03 — Expertise</div>
+    <h2 class="sec-title">Compétences & Expertises</h2>
+    <p class="sec-sub">Domaines de maîtrise technique en cours d'acquisition</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-block reveal">
+      <div class="sb-head"><div class="sb-icon">🔐</div><div class="sb-title">Cybersécurité</div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Audit de sécurité SI</span><span class="srow-pct">60%</span></div><div class="sbar"><div class="sbar-fill" data-w="60"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Gestion des mots de passe (Vaultwarden, KeePass)</span><span class="srow-pct">70%</span></div><div class="sbar"><div class="sbar-fill" data-w="70"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Politique DICP</span><span class="srow-pct">55%</span></div><div class="sbar"><div class="sbar-fill" data-w="55"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Chiffrement & Hachage</span><span class="srow-pct">50%</span></div><div class="sbar"><div class="sbar-fill" data-w="50"></div></div></div>
+    </div>
+    <div class="skill-block reveal">
+      <div class="sb-head"><div class="sb-icon">💻</div><div class="sb-title">Développement</div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">C# WPF (architecture MVC)</span><span class="srow-pct">65%</span></div><div class="sbar"><div class="sbar-fill" data-w="65"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">ASP.NET Core / API REST</span><span class="srow-pct">55%</span></div><div class="sbar"><div class="sbar-fill" data-w="55"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">.NET MAUI (Android)</span><span class="srow-pct">45%</span></div><div class="sbar"><div class="sbar-fill" data-w="45"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Python</span><span class="srow-pct">30%</span></div><div class="sbar"><div class="sbar-fill" data-w="30"></div></div></div>
+    </div>
+    <div class="skill-block reveal">
+      <div class="sb-head"><div class="sb-icon">🌐</div><div class="sb-title">Réseaux & Systèmes</div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">TCP/IP, OSI, CIDR/VLSM</span><span class="srow-pct">60%</span></div><div class="sbar"><div class="sbar-fill" data-w="60"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Linux (Raspberry Pi, Apache)</span><span class="srow-pct">55%</span></div><div class="sbar"><div class="sbar-fill" data-w="55"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">MQTT / IoT</span><span class="srow-pct">50%</span></div><div class="sbar"><div class="sbar-fill" data-w="50"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">VMware / Virtualisation</span><span class="srow-pct">50%</span></div><div class="sbar"><div class="sbar-fill" data-w="50"></div></div></div>
+    </div>
+    <div class="skill-block reveal">
+      <div class="sb-head"><div class="sb-icon">🛠️</div><div class="sb-title">Outils & Infrastructure</div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">PowerShell & Scripts Windows</span><span class="srow-pct">60%</span></div><div class="sbar"><div class="sbar-fill" data-w="60"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Docker</span><span class="srow-pct">50%</span></div><div class="sbar"><div class="sbar-fill" data-w="50"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">GLPI (inventaire parc)</span><span class="srow-pct">65%</span></div><div class="sbar"><div class="sbar-fill" data-w="65"></div></div></div>
+      <div class="srow"><div class="srow-top"><span class="srow-label">Git / GitHub</span><span class="srow-pct">55%</span></div><div class="sbar"><div class="sbar-fill" data-w="55"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ FORMATION ═══ -->
+<section id="formation">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">04 — Académique</div>
+    <h2 class="sec-title">Formations & Diplômes</h2>
+  </div>
+  <div class="form-grid">
+    <div class="form-card reveal">
+      <div class="form-icon">🎓</div>
+      <div>
+        <div class="form-title">BTS CIEL — Cybersécurité, Informatique, Électronique et Réseaux</div>
+        <div class="form-meta"><span class="form-year">2025 → 2027</span><span class="form-badge fb-cur">en cours</span></div>
+        <div class="form-place">Lycée Saint-Michel · Annecy</div>
+      </div>
+    </div>
+    <div class="form-card reveal">
+      <div class="form-icon">📜</div>
+      <div>
+        <div class="form-title">Baccalauréat STMG — option Gestion Finance</div>
+        <div class="form-meta"><span class="form-year">Juin 2025</span><span class="form-badge fb-ok">obtenu</span></div>
+        <div class="form-place">Lycée Amélie Zurcher · Wittelsheim</div>
+      </div>
+    </div>
+    <div class="form-card reveal">
+      <div class="form-icon">📋</div>
+      <div>
+        <div class="form-title">Brevet des Collèges</div>
+        <div class="form-meta"><span class="form-year">Juin 2021</span><span class="form-badge fb-ok">obtenu</span></div>
+        <div class="form-place">Collège Marcel Pagnol · Wittenheim</div>
+      </div>
+    </div>
+  </div>
+  <div class="langs reveal">
+    <span class="langs-label">Langues</span>
+    <span class="lang-pill">Français <span>NATIF</span></span>
+    <span class="lang-pill">Anglais <span>B1</span></span>
+    <span class="lang-pill">Allemand <span>A1</span></span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ CENTRES D'INTÉRÊT ═══ -->
+<section id="interets">
+  <div class="sec-head reveal" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
+    <div class="sec-eyebrow" style="justify-content:center;">05 — Personnel</div>
+    <h2 class="sec-title">Centres d'Intérêt</h2>
+  </div>
+  <div class="int-row">
+    <div class="int-card reveal"><div class="int-icon">💪</div><div class="int-label">Fitness & Musculation</div></div>
+    <div class="int-card reveal"><div class="int-icon">🔐</div><div class="int-label">Cybersécurité</div></div>
+    <div class="int-card reveal"><div class="int-icon">💻</div><div class="int-label">Développement logiciel</div></div>
+  </div>
+  <div class="int-row">
+    <div class="int-card reveal"><div class="int-icon">🎮</div><div class="int-label">Gaming</div></div>
+    <div class="int-card reveal"><div class="int-icon">🃏</div><div class="int-label">Blackjack</div></div>
+    <div class="int-card reveal"><div class="int-icon">🤖</div><div class="int-label">Intelligence Artificielle</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PARTAGE ═══ -->
+<section id="partage">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">06 — Partager</div>
+    <h2 class="sec-title">Partager ce CV</h2>
+    <p class="sec-sub">Scannez ce QR code pour accéder à ce CV en ligne</p>
+  </div>
+  <div class="qr-card reveal">
+    <div class="qr-white">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://houdaidr.github.io/" width="150" height="150" alt="QR Code vers houdaidr.github.io" />
+    </div>
+    <div class="qr-url">houdaidr.github.io</div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-name">Houda Sophia Idrissi</div>
+  <div class="foot-links">
+    <a href="mailto:houda.sophia.idrissi@gmail.com">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      houda.sophia.idrissi@gmail.com
+    </a>
+    <a href="https://www.linkedin.com/in/houda-idrissi-b57300279/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/HoudaIDR" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+  </div>
+  <div class="foot-credit">Conçu & développé par <span>Houda Sophia Idrissi</span> · 2026</div>
+</footer>
+
+<button id="top-btn" aria-label="Retour en haut">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script>
+  // ═══ THÈME ═══
+  var toggleBtn = document.getElementById('theme-toggle');
+  var iconSun = document.getElementById('icon-sun');
+  var iconMoon = document.getElementById('icon-moon');
+  toggleBtn.addEventListener('click', function() {
+    var isLight = document.documentElement.classList.toggle('light');
+    iconSun.style.display = isLight ? 'none' : 'block';
+    iconMoon.style.display = isLight ? 'block' : 'none';
+  });
+
+  // ═══ ACCORDÉON ═══
+  function toggleAcc(header) {
+    var item = header.closest('.titem');
+    var body = item.querySelector('.tbody');
+    var isOpen = item.classList.contains('open');
+    if (isOpen) {
+      body.style.maxHeight = '0px';
+      item.classList.remove('open');
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.classList.add('open');
+    }
+  }
+
+  // ═══ MOTION RÉDUITE ═══
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ═══ TYPING EFFECT ═══
+  var words = ['Cybersécurité', 'Réseaux', 'Développement C#', 'Infrastructure'];
+  var typedEl = document.getElementById('typed');
+  if (reduceMotion) {
+    typedEl.textContent = 'Cybersécurité & Réseaux';
+  } else {
+    var wi = 0, ci = 0, deleting = false;
+    var cursorEl = document.querySelector('.cursor');
+    function typeLoop() {
+      var word = words[wi];
+      if (!deleting) {
+        ci++;
+        typedEl.textContent = word.slice(0, ci);
+        if (ci === word.length) {
+          deleting = true;
+          if (cursorEl) cursorEl.style.opacity = '0';
+          setTimeout(function() {
+            if (cursorEl) cursorEl.style.opacity = '1';
+            typeLoop();
+          }, 1800);
+          return;
+        }
+        setTimeout(typeLoop, 70);
+      } else {
+        ci--;
+        typedEl.textContent = word.slice(0, ci);
+        if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; setTimeout(typeLoop, 350); return; }
+        setTimeout(typeLoop, 38);
+      }
+    }
+    window.addEventListener('load', function() { setTimeout(typeLoop, 1400); });
+  }
+
+  // ═══ REVEAL + BARRES + COMPTEURS ═══
+  var revealObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+
+  var barObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var fill = e.target;
+        fill.style.width = fill.getAttribute('data-w') + '%';
+        barObs.unobserve(fill);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.sbar-fill').forEach(function(el) { barObs.observe(el); });
+
+  function animateCount(el) {
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    if (reduceMotion) { el.textContent = target; return; }
+    var dur = 1100, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var countObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { animateCount(e.target); countObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.count').forEach(function(el) { countObs.observe(el); });
+
+  // ═══ PROGRESS BAR + TOP BTN ═══
+  var progressEl = document.getElementById('progress');
+  var topBtn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function() {
+    var h = document.documentElement;
+    var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressEl.style.width = pct + '%';
+    if (h.scrollTop > 500) topBtn.classList.add('show');
+    else topBtn.classList.remove('show');
+  }, { passive: true });
+  topBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); });
+
+  // ═══ NAV ACTIVE ═══
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav-links a');
+  var navObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        navLinks.forEach(function(a) {
+          a.classList.toggle('active', a.getAttribute('data-sec') === e.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-35% 0px -55% 0px' });
+  sections.forEach(function(s) { navObs.observe(s); });
+</script>
+</body>
+</html>
